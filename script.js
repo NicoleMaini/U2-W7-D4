@@ -1,3 +1,5 @@
+// funzione create card
+
 const createCard = array => {
   array.forEach(element => {
     const gridCard = document.getElementById("grid-card");
@@ -11,9 +13,13 @@ const createCard = array => {
     let divImg = document.createElement("div");
     divImg.style = "height: 20rem; overflow: hidden;";
 
+    let link = document.createElement("a");
+    link.href = "./profile.html";
+
     let img = document.createElement("img");
     img.classList.add("card-img-top", "object-fit-cover");
     img.style = "height: 100%; width: 100%";
+    img.onclick = goToProfile;
 
     img.src = element.src.medium;
     img.alt = element.alt;
@@ -55,12 +61,17 @@ const createCard = array => {
     divBtn.append(btnView, removeBtn);
     divBodyBtn.append(divBtn, idImg);
     divBody.append(title, description, divBodyBtn);
-    divImg.appendChild(img);
+    link.appendChild(img);
+    divImg.appendChild(link);
     container.append(divImg, divBody);
     col.appendChild(container);
     gridCard.appendChild(col);
   });
 };
+
+// funzione fetch
+
+const URL = "https://api.pexels.com/v1/search?query=";
 
 function callFetch(queryAdd) {
   return fetch("https://api.pexels.com/v1/search?query=" + queryAdd, {
@@ -84,8 +95,6 @@ function callFetch(queryAdd) {
     }
   });
 }
-
-const URL = "https://api.pexels.com/v1/search?query=";
 
 // btn
 
@@ -122,3 +131,29 @@ btnSecond.onclick = () => {
 
 const form = document.querySelector("form");
 const btnSearch = document.getElementById("btn-search");
+
+btnSearch.onclick = () => {
+  const input = document.querySelector("input").value;
+  console.log(input);
+  callFetch(input).then(imagesObj => {
+    console.log(imagesObj);
+
+    const images = imagesObj.photos;
+    console.log(images);
+
+    //creo le card
+
+    const gridCard = document.getElementById("grid-card");
+    gridCard.innerHTML = "";
+    createCard(images);
+  });
+  form.reset();
+};
+
+// page
+
+function goToProfile() {
+  const params = new URLSearchParams(window.location.search);
+  console.log(params);
+  // const idProfile = params.get()
+}
