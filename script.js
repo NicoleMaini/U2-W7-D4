@@ -14,12 +14,13 @@ const createCard = array => {
     divImg.style = "height: 20rem; overflow: hidden;";
 
     let link = document.createElement("a");
-    link.href = "./profile.html";
+    link.href = `./profile.html?id=${element.id}&photographer=${element.photographer}&title=${element.alt}&img=${
+      element.src.medium
+    }&color=${element.avg_color.substring(1)}`;
 
     let img = document.createElement("img");
     img.classList.add("card-img-top", "object-fit-cover");
     img.style = "height: 100%; width: 100%";
-    img.onclick = goToProfile;
 
     img.src = element.src.medium;
     img.alt = element.alt;
@@ -27,14 +28,18 @@ const createCard = array => {
     let divBody = document.createElement("div");
     divBody.classList.add("card-body", "d-flex", "flex-column");
 
+    let linkTitle = document.createElement("a");
+    linkTitle.classList.add("card-title", "text-decoration-none");
+    linkTitle.href = `./profile.html?id=${element.id}&photographer=${element.photographer}&title=${element.alt}&img=${
+      element.src.medium
+    }&bgColor=${element.avg_color.substring(1)}`;
+
     let title = document.createElement("h5");
     title.classList.add("card-title");
-
     title.innerText = element.photographer;
 
     let description = document.createElement("p");
     description.classList.add("card-text", "my-auto");
-
     description.innerText = element.alt;
 
     let divBodyBtn = document.createElement("div");
@@ -60,7 +65,8 @@ const createCard = array => {
 
     divBtn.append(btnView, removeBtn);
     divBodyBtn.append(divBtn, idImg);
-    divBody.append(title, description, divBodyBtn);
+    linkTitle.appendChild(title);
+    divBody.append(linkTitle, description, divBodyBtn);
     link.appendChild(img);
     divImg.appendChild(link);
     container.append(divImg, divBody);
@@ -87,7 +93,7 @@ function callFetch(queryAdd) {
       if (response.status === 404) {
         throw new Error("404 - Dato non trovato");
       }
-      if (response.status === 400) {
+      if (response.status === 500) {
         throw new Error("500 - Errore lato server");
       }
 
@@ -95,6 +101,29 @@ function callFetch(queryAdd) {
     }
   });
 }
+
+// form
+
+const form = document.getElementById("form");
+const btnSearch = document.getElementById("btn-search");
+
+btnSearch.onclick = () => {
+  const input = document.querySelector("input").value;
+  console.log(input);
+  callFetch(input).then(imagesObj => {
+    console.log(imagesObj);
+
+    const images = imagesObj.photos;
+    console.log(images);
+
+    //creo le card
+
+    const gridCard = document.getElementById("grid-card");
+    gridCard.innerHTML = "";
+    createCard(images);
+  });
+  document.querySelector("input").value = "";
+};
 
 // btn
 
@@ -126,34 +155,3 @@ btnSecond.onclick = () => {
     createCard(images);
   });
 };
-
-// form
-
-const form = document.querySelector("form");
-const btnSearch = document.getElementById("btn-search");
-
-btnSearch.onclick = () => {
-  const input = document.querySelector("input").value;
-  console.log(input);
-  callFetch(input).then(imagesObj => {
-    console.log(imagesObj);
-
-    const images = imagesObj.photos;
-    console.log(images);
-
-    //creo le card
-
-    const gridCard = document.getElementById("grid-card");
-    gridCard.innerHTML = "";
-    createCard(images);
-  });
-  form.reset();
-};
-
-// page
-
-function goToProfile() {
-  const params = new URLSearchParams(window.location.search);
-  console.log(params);
-  // const idProfile = params.get()
-}

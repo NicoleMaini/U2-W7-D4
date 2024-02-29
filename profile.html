@@ -16,6 +16,17 @@
         cursor: pointer;
       }
 
+      .w-40 {
+        width: 40%;
+      }
+
+      .bg-color {
+        background-color: white;
+        border: 1px solid rgb(237, 236, 236);
+        border-radius: 15px;
+        padding: 1rem;
+      }
+
       .jumbotron {
         padding-top: 3rem;
         padding-bottom: 3rem;
@@ -125,18 +136,18 @@
       </nav>
     </header>
     <main role="main">
-      <section class="jumbotron text-center">
-        <div class="container">
-          <h1 class="jumbotron-heading">Album API example</h1>
-          <p class="lead text-muted">
-            This page will dynamically load pictures from the web, and display them in a cool way!
-          </p>
+      <img src="" alt="" id="img-profile" class="w-100 object-fit-cover" style="height: 60vh" />
+      <section class="text-center py-4">
+        <div class="w-40 mx-auto bg-color" id="container-description">
+          <!-- <h1 class="jumbotron-heading"></h1>
+          <p class="lead text-muted"></p>
+          <small class="text-muted"></small> -->
         </div>
       </section>
     </main>
-    <footer class="text-muted">
+    <footer class="text-muted py-4">
       <div class="container">
-        <p class="float-right">
+        <p class="text-center">
           <a href="./index.html">Back to previusly page</a>
         </p>
       </div>
@@ -146,6 +157,6 @@
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
       crossorigin="anonymous"
     ></script>
-    <script src="script.js"></script>
+    <script src="script-profile.js"></script>
   </body>
 </html>
